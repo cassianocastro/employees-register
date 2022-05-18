@@ -1,30 +1,30 @@
 package controll;
 
-import model.dao.Dao;
-import model.dao.FuncionarioDAO;
+import model.dao.EmployeeDAO;
 import view.View;
-import view.FuncionarioView;
-import model.Funcionario;
-import model.Sexo;
+import view.EmployeeView;
+import model.Employee;
+import model.Sex;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.text.*;
 import java.util.Date;
+import model.dao.DAO;
 
 /**
  *
  * @author User
  */
-public class FuncionarioController
+public class EmployeesController
 {
 
-    private final Dao funcionarioDAO;
+    private final DAO funcionarioDAO;
     private final View funcionarioView;
 
-    public FuncionarioController(Connection connection)
+    public EmployeesController(Connection connection)
     {
-        this.funcionarioDAO  = new FuncionarioDAO(connection);
-        this.funcionarioView = new FuncionarioView();
+        this.funcionarioDAO  = new EmployeeDAO(connection);
+        this.funcionarioView = new EmployeeView();
     }
 
     public void caller()
@@ -71,10 +71,9 @@ public class FuncionarioController
         }
         String nome = dados[0];
         String cpf = dados[1];
-        Sexo sexo = Sexo.valueOf(dados[2]);
+        Sex sexo = Sex.valueOf(dados[2]);
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]);
-        this.funcionarioDAO.create(
-            new Funcionario(0, nome, sexo, cpf, date)
+        this.funcionarioDAO.create(new Employee(0, nome, sexo, cpf, date)
         );
         this.funcionarioView.show("Funcionário cadastrado.");
     }
@@ -91,7 +90,7 @@ public class FuncionarioController
         int ID = Integer.parseUnsignedInt(
             this.funcionarioView.getID()
         );
-        Funcionario funcionario = (Funcionario) this.funcionarioDAO.findByThis(ID);
+        Employee funcionario = (Employee) this.funcionarioDAO.findByThis(ID);
         if ( funcionario == null )
         {
             this.funcionarioView.show("Funcionário não encontrado.");
@@ -107,7 +106,7 @@ public class FuncionarioController
                 funcionario.setCpf(dados[1]);
                 break;
             case "Sexo":
-                funcionario.setSexo(Sexo.valueOf(dados[1]));
+                funcionario.setSexo(Sex.valueOf(dados[1]));
                 break;
             default:
                 funcionario.setData_nascimento(

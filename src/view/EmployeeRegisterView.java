@@ -11,7 +11,7 @@ import javax.swing.text.MaskFormatter;
 /**
  *
  */
-public final class Cadastro extends JDialog implements ActionListener
+public final class EmployeeRegisterView extends JDialog implements ActionListener
 {
 
     private JComponent panelLabels, panelFields, panelButtons, panelPrincipal, jOptionPane;
@@ -22,7 +22,7 @@ public final class Cadastro extends JDialog implements ActionListener
     private final JButton buttonSalvar, buttonCancelar;
     private String[] dados;
 
-    public Cadastro()
+    public EmployeeRegisterView()
     {
         setModalityType(DEFAULT_MODALITY_TYPE);
         this.grid           = new GridLayout(4, 1);

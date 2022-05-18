@@ -1,7 +1,7 @@
 package main;
 
 import model.dao.ConnectionFactory;
-import controll.FuncionarioController;
+import controll.EmployeesController;
 import java.sql.*;
 import javax.swing.*;
 
@@ -18,7 +18,7 @@ public class Main
     {
         try (Connection connection = new ConnectionFactory().getConnection())
         {
-            new FuncionarioController(connection).caller();
+            new EmployeesController(connection).caller();
         } catch (SQLException e)
         {
             JOptionPane.showMessageDialog(null, e.getMessage());

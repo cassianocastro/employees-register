@@ -5,7 +5,7 @@ import javax.swing.*;
 /**
  *
  */
-public class FuncionarioView implements View
+public class EmployeeView implements View
 {
 
     @Override
@@ -28,7 +28,7 @@ public class FuncionarioView implements View
     @Override
     public String[] insert()
     {
-        Cadastro cadastro = new Cadastro();
+        EmployeeRegisterView cadastro = new EmployeeRegisterView();
 
         return cadastro.getDados();
     }

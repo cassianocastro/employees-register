@@ -1,20 +1,20 @@
 package model.dao;
 
-import model.RegistrosFuncionarios;
-import model.Funcionario;
-import model.Repositorio;
-import model.Sexo;
+import model.RegistersEmployees;
+import model.Employee;
+import model.Sex;
 import java.sql.*;
+import model.Repository;
 
 /**
  *
  */
-public class FuncionarioDAO implements Dao
+public class EmployeeDAO implements DAO
 {
 
     private final Connection connection;
 
-    public FuncionarioDAO(Connection connection)
+    public EmployeeDAO(Connection connection)
     {
         this.connection = connection;
     }
@@ -22,7 +22,7 @@ public class FuncionarioDAO implements Dao
     @Override
     public void create(Object object) throws SQLException
     {
-        Funcionario funcionario = (Funcionario) object;
+        Employee funcionario = (Employee) object;
         String SQL = "INSERT INTO funcionarios "
             + "( nome, sexo, cpf, data_nasc ) "
             + "VALUES "
@@ -38,9 +38,9 @@ public class FuncionarioDAO implements Dao
     }
 
     @Override
-    public Repositorio read() throws SQLException
+    public Repository read() throws SQLException
     {
-        Repositorio repositorio = new RegistrosFuncionarios();
+        Repository repositorio = new RegistersEmployees();
         String SQL = "SELECT * FROM funcionarios";
 
         try (PreparedStatement statement = this.connection.prepareStatement(SQL);
@@ -51,9 +51,9 @@ public class FuncionarioDAO implements Dao
                 int ID      = rs.getInt("codigo");
                 String nome = rs.getString("nome");
                 String cpf  = rs.getString("cpf");
-                Sexo sexo   = Sexo.valueOf(rs.getString("sexo"));
+                Sex sexo   = Sex.valueOf(rs.getString("sexo"));
                 java.util.Date data = rs.getDate("data_nasc");
-                repositorio.add(new Funcionario(ID, nome, sexo, cpf, data));
+                repositorio.add(new Employee(ID, nome, sexo, cpf, data));
             }
         }
         return repositorio;
@@ -62,7 +62,7 @@ public class FuncionarioDAO implements Dao
     @Override
     public void update(Object object) throws SQLException
     {
-        Funcionario funcionario = (Funcionario) object;
+        Employee funcionario = (Employee) object;
         String SQL = "UPDATE funcionarios SET "
             + "nome = ?, "
             + "sexo = ?, "
@@ -84,7 +84,7 @@ public class FuncionarioDAO implements Dao
     @Override
     public void delete(Object object) throws SQLException
     {
-        Funcionario funcionario = (Funcionario) object;
+        Employee funcionario = (Employee) object;
         String SQL = "DELETE FROM funcionarios WHERE codigo = ?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(SQL))
@@ -109,9 +109,9 @@ public class FuncionarioDAO implements Dao
                     int ID = rs.getInt("codigo");
                     String nome = rs.getString("nome");
                     String cpf = rs.getString("cpf");
-                    Sexo sexo = Sexo.valueOf(rs.getString("sexo"));
+                    Sex sexo = Sex.valueOf(rs.getString("sexo"));
                     Date data = rs.getDate("data_nasc");
-                    return new Funcionario(ID, nome, sexo, cpf, data);
+                    return new Employee(ID, nome, sexo, cpf, data);
                 }
             }
         }

@@ -4,7 +4,7 @@ package model;
  *
  * @author User
  */
-public enum Sexo
+public enum Sex
 {
 
     m("m"),
@@ -12,7 +12,7 @@ public enum Sexo
 
     private final String descricao;
 
-    private Sexo(String descricao)
+    private Sex(String descricao)
     {
         this.descricao = descricao;
     }

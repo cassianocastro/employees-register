@@ -4,7 +4,7 @@ package model;
  *
  * @author cassiano
  */
-public interface Repositorio
+public interface Repository
 {
 
     public void add(Object object);

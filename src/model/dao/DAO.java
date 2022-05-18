@@ -1,17 +1,17 @@
 package model.dao;
 
 import java.sql.SQLException;
-import model.Repositorio;
+import model.Repository;
 
 /**
  *
  */
-public interface Dao
+public interface DAO
 {
 
     public void create(Object object) throws SQLException;
 
-    public Repositorio read() throws SQLException;
+    public Repository read() throws SQLException;
 
     public void update(Object object) throws SQLException;
 

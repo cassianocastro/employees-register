@@ -6,12 +6,12 @@ import java.util.*;
  *
  * 
  */
-public class RegistrosFuncionarios implements Repositorio
+public class RegistersEmployees implements Repository
 {
 
-    private final List<Funcionario> grupo;
+    private final List<Employee> grupo;
 
-    public RegistrosFuncionarios()
+    public RegistersEmployees()
     {
         this.grupo = new LinkedList<>();
     }
@@ -19,7 +19,7 @@ public class RegistrosFuncionarios implements Repositorio
     @Override
     public void add(Object object)
     {
-        this.grupo.add((Funcionario) object);
+        this.grupo.add((Employee) object);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class RegistrosFuncionarios implements Repositorio
         if ( !this.grupo.isEmpty() )
         {
             StringBuilder msg = new StringBuilder();
-            for ( Funcionario funcionario : this.grupo )
+            for ( Employee funcionario : this.grupo )
             {
                 msg.append(funcionario.toString());
                 msg.append("\n***\n");

@@ -7,15 +7,15 @@ import java.util.Date;
  *
  * @author cassiano
  */
-public class Funcionario
+public class Employee
 {
 
     private String nome, cpf;
     private int ID;
-    private Sexo sexo;
+    private Sex sexo;
     private Date data_nascimento;
 
-    public Funcionario(int ID, String nome, Sexo sexo, String cpf, Date data_nascimento)
+    public Employee(int ID, String nome, Sex sexo, String cpf, Date data_nascimento)
     {
         this.ID = ID;
         this.nome = nome;
@@ -75,7 +75,7 @@ public class Funcionario
         this.cpf = cpf;
     }
 
-    public void setSexo(Sexo sexo)
+    public void setSexo(Sex sexo)
     {
         this.sexo = sexo;
     }
