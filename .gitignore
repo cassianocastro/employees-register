@@ -1,1 +1,2 @@
-lib/MYSQL
+build/
+src/lib/db.sqlite
