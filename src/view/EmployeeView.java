@@ -4,6 +4,7 @@ import javax.swing.*;
 
 /**
  *
+ *
  */
 public class EmployeeView implements View
 {
@@ -13,13 +14,14 @@ public class EmployeeView implements View
     {
         return JOptionPane.showOptionDialog(
             null,
-            "Escolha uma opção:", "Funcionário",
+            "Choose an option:",
+            "Employee",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
             null,
             new String[]
             {
-                "Inserir", "Exibir", "Procurar", "Atualizar", "Remover", "Sair"
+                "Insert", "Show", "Search", "Update", "Delete", "Exit"
             },
             null
         );
@@ -28,18 +30,16 @@ public class EmployeeView implements View
     @Override
     public String[] insert()
     {
-        EmployeeRegisterView cadastro = new EmployeeRegisterView();
-
-        return cadastro.getDados();
+        return new EmployeeRegisterView().getDados();
     }
 
     @Override
-    public void show(CharSequence mensagem)
+    public void show(CharSequence msg)
     {
         JOptionPane.showMessageDialog(
             null,
-            mensagem,
-            "Funcionários",
+            msg,
+            "Employees",
             JOptionPane.INFORMATION_MESSAGE
         );
     }
@@ -47,29 +47,31 @@ public class EmployeeView implements View
     @Override
     public String getID()
     {
-        return JOptionPane.showInputDialog("Informe o ID:");
+        return JOptionPane.showInputDialog("ID:");
     }
 
     @Override
     public String[] update()
     {
-        String atributo = JOptionPane.showInputDialog(
+        String attribute = JOptionPane.showInputDialog(
             null,
-            "Tipo de Atributo:", "Alterar...",
+            "Attribute type:",
+            "To alter...",
             JOptionPane.DEFAULT_OPTION,
             null,
             new String[]
             {
-                "Nome", "CPF", "Sexo", "Data de Nascimento"
+                "Name", "CPF", "Sex", "BirthDate"
             },
             null
         ).toString();
-        String novoDado = JOptionPane.showInputDialog(null, atributo + ":");
+
+        String newData = JOptionPane.showInputDialog(null, attribute + ":");
+
         return new String[]
         {
-            atributo,
-            novoDado
+            attribute,
+            newData
         };
     }
-
 }

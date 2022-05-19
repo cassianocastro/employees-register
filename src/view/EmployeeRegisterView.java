@@ -10,21 +10,34 @@ import javax.swing.text.MaskFormatter;
 
 /**
  *
+ *
  */
-public final class EmployeeRegisterView extends JDialog implements ActionListener
+final public class EmployeeRegisterView extends JDialog implements ActionListener
 {
 
     private JComponent panelLabels, panelFields, panelButtons, panelPrincipal, jOptionPane;
     private GridLayout grid;
-    private final JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
+    private JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
     private MaskFormatter maskCPF, maskNascimento;
-    private final JComboBox<String> comboSexo;
-    private final JButton buttonSalvar, buttonCancelar;
+    private JComboBox<String> comboSexo;
+    private JButton buttonSalvar, buttonCancelar;
     private String[] dados;
 
     public EmployeeRegisterView()
     {
-        setModalityType(DEFAULT_MODALITY_TYPE);
+        super.setModalityType(DEFAULT_MODALITY_TYPE);
+
+        this.initComponents();
+
+        super.setContentPane(this.jOptionPane);
+        super.pack();
+        super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        super.setLocationRelativeTo(null);
+        super.setVisible(true);
+    }
+
+    private void initComponents()
+    {
         this.grid           = new GridLayout(4, 1);
         this.panelLabels    = new JPanel(this.grid);
         this.panelFields    = new JPanel(this.grid);
@@ -45,7 +58,7 @@ public final class EmployeeRegisterView extends JDialog implements ActionListene
         this.fieldNascimento = new JFormattedTextField(this.maskNascimento);
         this.comboSexo       = new JComboBox<>(new String[]
         {
-            "m", "f"
+            "M", "F"
         });
 
         this.fieldNome.setColumns(20);
@@ -83,11 +96,6 @@ public final class EmployeeRegisterView extends JDialog implements ActionListene
                 this.panelPrincipal
             }
         );
-        setContentPane(this.jOptionPane);
-        pack();
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     @Override
@@ -104,9 +112,6 @@ public final class EmployeeRegisterView extends JDialog implements ActionListene
                 this.comboSexo.getSelectedItem().toString(),
                 this.fieldNascimento.getText()
             };
-        } else if ( o == this.buttonCancelar )
-        {
-            JOptionPane.showMessageDialog(rootPane, "Op. cancelada.");
         }
         this.dispose();
     }
@@ -115,5 +120,4 @@ public final class EmployeeRegisterView extends JDialog implements ActionListene
     {
         return this.dados;
     }
-
 }
