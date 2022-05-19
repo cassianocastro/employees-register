@@ -1,150 +1,135 @@
-package controll;
+package controller;
 
-import model.dao.EmployeeDAO;
-import view.View;
-import view.EmployeeView;
-import model.Employee;
-import model.Sex;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.text.*;
-import java.util.Date;
-import model.dao.DAO;
+import java.util.Calendar;
+import model.dao.EmployeeDAO;
+import model.Employee;
+import model.EmployeeFormatter;
+import model.Sex;
+import view.EmployeeView;
+import view.View;
 
 /**
  *
- * @author User
+ *
  */
 public class EmployeesController
 {
 
-    private final DAO funcionarioDAO;
-    private final View funcionarioView;
+    private final EmployeeDAO employeeDAO;
+    private final View employeeView;
 
     public EmployeesController(Connection connection)
     {
-        this.funcionarioDAO  = new EmployeeDAO(connection);
-        this.funcionarioView = new EmployeeView();
+        this.employeeDAO  = new EmployeeDAO(connection);
+        this.employeeView = new EmployeeView();
     }
 
     public void caller()
     {
-        int opcao;
+        int option;
+        
         while ( true )
         {
-            opcao = this.funcionarioView.getOption();
+            option = this.employeeView.getOption();
             try
             {
-                switch ( opcao )
+                switch ( option )
                 {
                     case 0:
-                        create();
+                        this.create();
                         break;
                     case 1:
-                        read();
+                        this.read();
                         break;
                     case 2:
-                        search();
+                        this.search();
                         break;
                     case 3:
-                        update();
+                        this.update();
                         break;
                     case 4:
-                        delete();
+                        this.delete();
                         break;
                     default:
                         System.exit(0);
                 }
             } catch (SQLException | ParseException e)
             {
-                this.funcionarioView.show(e.getMessage());
+                this.employeeView.show(e.getMessage());
             }
         }
     }
 
     private void create() throws SQLException, ParseException
     {
-        String[] dados = this.funcionarioView.insert();
-        if ( dados == null )
-        {
-            return;
-        }
-        String nome = dados[0];
-        String cpf = dados[1];
-        Sex sexo = Sex.valueOf(dados[2]);
-        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]);
-        this.funcionarioDAO.create(new Employee(0, nome, sexo, cpf, date)
-        );
-        this.funcionarioView.show("Funcionário cadastrado.");
+        String[] dados = this.employeeView.insert();
+
+        if ( dados == null ) return;
+
+        String name   = dados[0];
+        String cpf    = dados[1];
+        Sex sex       = Sex.valueOf(dados[2]);
+        Calendar date = Calendar.getInstance();
+
+        date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]));
+
+        this.employeeDAO.insert(new Employee(0, name, sex, cpf, date));
+        this.employeeView.show("Funcionário cadastrado.");
     }
 
     private void read() throws SQLException
     {
-        this.funcionarioView.show(
-            this.funcionarioDAO.read().toStringBuilder()
-        );
+        this.employeeView.show(this.employeeDAO.getAll().toString());
     }
 
     private void update() throws SQLException, ParseException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.funcionarioView.getID()
-        );
-        Employee funcionario = (Employee) this.funcionarioDAO.findByThis(ID);
-        if ( funcionario == null )
-        {
-            this.funcionarioView.show("Funcionário não encontrado.");
-            return;
-        }
-        String[] dados = this.funcionarioView.update();
+        int id = Integer.parseUnsignedInt(this.employeeView.getID());
+
+        Employee employee = this.employeeDAO.findByID(id);
+        String[] dados    = this.employeeView.update();
+
         switch ( dados[0] )
         {
             case "Nome":
-                funcionario.setNome(dados[1]);
+                employee.setName(dados[1]);
                 break;
             case "CPF":
-                funcionario.setCpf(dados[1]);
+                employee.setCPF(dados[1]);
                 break;
             case "Sexo":
-                funcionario.setSexo(Sex.valueOf(dados[1]));
+                employee.setSex(Sex.valueOf(dados[1]));
                 break;
             default:
-                funcionario.setData_nascimento(
-                    new SimpleDateFormat("dd/MM/yyyy").parse(dados[1])
-                );
+                Calendar date = Calendar.getInstance();
+                date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[1]));
+
+                employee.setBirthDate(date);
         }
-        this.funcionarioDAO.update(funcionario);
-        this.funcionarioView.show("Registro atualizado.");
+        this.employeeDAO.update(employee);
+        this.employeeView.show("Registro atualizado.");
     }
 
     private void delete() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.funcionarioView.getID()
-        );
-        Object funcionario = this.funcionarioDAO.findByThis(ID);
-        if ( funcionario == null )
-        {
-            this.funcionarioView.show("Funcionário não encontrado.");
-            return;
-        }
-        this.funcionarioDAO.delete(funcionario);
-        this.funcionarioView.show("Funcionário excluído");
+        int id = Integer.parseUnsignedInt(this.employeeView.getID());
+
+        Employee employee = this.employeeDAO.findByID(id);
+
+        this.employeeDAO.delete(employee);
+        this.employeeView.show("Funcionário excluído");
     }
 
     private void search() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.funcionarioView.getID()
-        );
-        Object funcionario = this.funcionarioDAO.findByThis(ID);
+        int id = Integer.parseUnsignedInt(this.employeeView.getID());
 
-        if ( funcionario == null )
-        {
-            this.funcionarioView.show("Funcionário não encontrado.");
-            return;
-        }
-        this.funcionarioView.show(funcionario.toString());
+        Employee employee = this.employeeDAO.findByID(id);
+        String formatted  = new EmployeeFormatter().format(employee);
+
+        this.employeeView.show(formatted);
     }
-
 }
