@@ -6,36 +6,37 @@ import java.util.*;
  *
  *
  */
-public class RegistersEmployees implements Repository
+public class EmployeesGroup
 {
 
-    private final List<Employee> grupo;
+    private final List<Employee> group;
 
-    public RegistersEmployees()
+    public EmployeesGroup()
     {
-        this.grupo = new LinkedList<>();
+        this.group = new LinkedList<>();
+    }
+
+    public void add(Employee employee)
+    {
+        this.group.add(employee);
     }
 
     @Override
-    public void add(Object object)
+    public String toString()
     {
-        this.grupo.add((Employee) object);
-    }
-
-    @Override
-    public StringBuilder toStringBuilder()
-    {
-        if ( !this.grupo.isEmpty() )
+        if ( ! this.group.isEmpty() )
         {
-            StringBuilder msg = new StringBuilder();
-            for ( Employee funcionario : this.grupo )
-            {
-                msg.append(funcionario.toString());
-                msg.append("\n***\n");
-            }
-            return msg;
-        }
-        return new StringBuilder("Sem registros");
-    }
+            var msg       = new StringBuilder();
+            var formatter = new EmployeeFormatter();
 
+            for ( Employee employee : this.group )
+            {
+                msg
+                    .append(formatter.format(employee))
+                    .append("\n***\n");
+            }
+            return msg.toString();
+        }
+        return "Without registers";
+    }
 }

@@ -1,87 +1,77 @@
 package model;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
- * @author cassiano
+ *
  */
 public class Employee
 {
 
-    private String nome, cpf;
-    private int ID;
-    private Sex sexo;
-    private Date data_nascimento;
+    private int id;
+    private String name;
+    private String cpf;
+    private Sex sex;
+    private Calendar birthDate;
 
-    public Employee(int ID, String nome, Sex sexo, String cpf, Date data_nascimento)
+    public Employee(int id, String name, Sex sex, String cpf, Calendar birthDate)
     {
-        this.ID = ID;
-        this.nome = nome;
-        this.sexo = sexo;
-        this.cpf = cpf;
-        this.data_nascimento = data_nascimento;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "\nID: " + this.ID
-            + "\nNome: " + this.nome
-            + "\nSexo: " + this.sexo.getDescricao()
-            + "\nCPF: " + this.cpf
-            + "\nData de Nascimento: " + new SimpleDateFormat("dd/MM/yyyy")
-                .format(this.data_nascimento);
-    }
-
-    public String getNome()
-    {
-        return this.nome;
-    }
-
-    public String getSexo()
-    {
-        return this.sexo.getDescricao();
-    }
-
-    public String getCpf()
-    {
-        return this.cpf;
+        this.id   = id;
+        this.name = name;
+        this.sex  = sex;
+        this.cpf  = cpf;
+        this.birthDate = birthDate;
     }
 
     public int getID()
     {
-        return this.ID;
+        return this.id;
     }
 
-    public Date getData_nascimento()
+    public String getName()
     {
-        return this.data_nascimento;
+        return this.name;
     }
 
-    public void setID(int ID)
+    public String getCPF()
     {
-        this.ID = ID;
+        return this.cpf;
     }
 
-    public void setNome(String nome)
+    public Sex getSex()
     {
-        this.nome = nome;
+        return this.sex;
     }
 
-    public void setCpf(String cpf)
+    public Calendar getBirthDate()
+    {
+        return this.birthDate;
+    }
+
+    public void setID(int id)
+    {
+        this.id = id;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setCPF(String cpf)
     {
         this.cpf = cpf;
     }
 
-    public void setSexo(Sex sexo)
+    public void setSex(Sex sex)
     {
-        this.sexo = sexo;
+        this.sex = sex;
     }
 
-    public void setData_nascimento(Date data_nascimento)
+    public void setBirthDate(Calendar birthDate)
     {
-        this.data_nascimento = data_nascimento;
+        this.birthDate = birthDate;
     }
 }

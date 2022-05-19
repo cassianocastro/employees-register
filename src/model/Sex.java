@@ -2,7 +2,7 @@ package model;
 
 /**
  *
- * @author User
+ *
  */
 public enum Sex
 {
@@ -10,15 +10,15 @@ public enum Sex
     m("m"),
     f("f");
 
-    private final String descricao;
+    private final String description;
 
-    private Sex(String descricao)
+    private Sex(String description)
     {
-        this.descricao = descricao;
+        this.description = description;
     }
 
-    public String getDescricao()
+    public String getDescription()
     {
-        return this.descricao;
+        return this.description;
     }
 }
