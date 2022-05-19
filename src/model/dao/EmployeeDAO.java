@@ -1,15 +1,16 @@
 package model.dao;
 
-import model.RegistersEmployees;
+import model.EmployeesGroup;
 import model.Employee;
 import model.Sex;
 import java.sql.*;
-import model.Repository;
+import java.util.Calendar;
 
 /**
  *
+ *
  */
-public class EmployeeDAO implements DAO
+public class EmployeeDAO
 {
 
     private final Connection connection;
@@ -19,102 +20,98 @@ public class EmployeeDAO implements DAO
         this.connection = connection;
     }
 
-    @Override
-    public void create(Object object) throws SQLException
+    public void insert(Employee employee) throws SQLException
     {
-        Employee funcionario = (Employee) object;
-        String SQL = "INSERT INTO funcionarios "
-            + "( nome, sexo, cpf, data_nasc ) "
-            + "VALUES "
-            + "( ?, ?, ?, ? )";
+        final String SQL = "INSERT INTO employee(name, sex, cpf, birthDate) VALUES (?, ?, ?, ?)";
+
         try (PreparedStatement statement = this.connection.prepareStatement(SQL))
         {
-            statement.setString(1, funcionario.getNome());
-            statement.setString(2, funcionario.getSexo());
-            statement.setString(3, funcionario.getCpf());
-            statement.setDate(4, new Date(funcionario.getData_nascimento().getTime()));
+            statement.setString(1, employee.getName());
+            statement.setString(2, employee.getSex().getDescription());
+            statement.setString(3, employee.getCPF());
+            statement.setLong(4, employee.getBirthDate().getTimeInMillis());
+
+            statement.execute();
+        }
+    }
+
+    public void update(Employee employee) throws SQLException
+    {
+        final String SQL = "UPDATE employee SET name = ?, sex = ?, cpf = ?, birthDate = ? WHERE PK_ID = ?";
+
+        try (var statement = this.connection.prepareStatement(SQL))
+        {
+            statement.setString(1, employee.getName());
+            statement.setString(2, employee.getSex().getDescription());
+            statement.setString(3, employee.getCPF());
+            statement.setLong(4, employee.getBirthDate().getTimeInMillis());
+            statement.setInt(5, employee.getID());
+
             statement.executeUpdate();
         }
     }
 
-    @Override
-    public Repository read() throws SQLException
+    public void delete(Employee employee) throws SQLException
     {
-        Repository repositorio = new RegistersEmployees();
-        String SQL = "SELECT * FROM funcionarios";
+        final String SQL = "DELETE FROM employee WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery())
+        try (var statement = this.connection.prepareStatement(SQL))
         {
+            statement.setInt(1, employee.getID());
+
+            statement.execute();
+        }
+    }
+
+    public EmployeesGroup getAll() throws SQLException
+    {
+        final String SQL = "SELECT PK_ID, name, sex, cpf, birthDate FROM employee";
+
+        try (var statement = this.connection.prepareStatement(SQL);
+            var rs = statement.executeQuery())
+        {
+            var group = new EmployeesGroup();
+
             while ( rs.next() )
             {
-                int ID      = rs.getInt("codigo");
-                String nome = rs.getString("nome");
-                String cpf  = rs.getString("cpf");
-                Sex sexo   = Sex.valueOf(rs.getString("sexo"));
-                java.util.Date data = rs.getDate("data_nasc");
-                repositorio.add(new Employee(ID, nome, sexo, cpf, data));
+                int id        = rs.getInt("PK_ID");
+                String name   = rs.getString("name");
+                String cpf    = rs.getString("cpf");
+                Sex sex       = Sex.valueOf(rs.getString("sex"));
+                Calendar date = Calendar.getInstance();
+
+                date.setTimeInMillis(rs.getLong("birthDate"));
+
+                group.add(new Employee(id, name, sex, cpf, date));
             }
-        }
-        return repositorio;
-    }
-
-    @Override
-    public void update(Object object) throws SQLException
-    {
-        Employee funcionario = (Employee) object;
-        String SQL = "UPDATE funcionarios SET "
-            + "nome = ?, "
-            + "sexo = ?, "
-            + "cpf = ?, "
-            + "data_nasc = ? "
-            + "WHERE codigo = ?";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setString(1, funcionario.getNome());
-            statement.setString(2, funcionario.getSexo());
-            statement.setString(3, funcionario.getCpf());
-            statement.setDate(4, new Date(funcionario.getData_nascimento().getTime()));
-            statement.setInt(5, funcionario.getID());
-            statement.executeUpdate();
+            return group;
         }
     }
 
-    @Override
-    public void delete(Object object) throws SQLException
+    public Employee findByID(int ID) throws SQLException
     {
-        Employee funcionario = (Employee) object;
-        String SQL = "DELETE FROM funcionarios WHERE codigo = ?";
+        final String SQL = "SELECT PK_ID, name, sex, cpf, birthDate FROM employee WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setInt(1, funcionario.getID());
-            statement.executeUpdate();
-        }
-    }
+            statement.setInt(1, ID);
 
-    @Override
-    public Object findByThis(int IDinformado) throws SQLException
-    {
-        String SQL = "SELECT * FROM funcionarios WHERE codigo = ?";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setInt(1, IDinformado);
-            try (ResultSet rs = statement.executeQuery())
+            try (var rs = statement.executeQuery())
             {
                 while ( rs.next() )
                 {
-                    int ID = rs.getInt("codigo");
-                    String nome = rs.getString("nome");
-                    String cpf = rs.getString("cpf");
-                    Sex sexo = Sex.valueOf(rs.getString("sexo"));
-                    Date data = rs.getDate("data_nasc");
-                    return new Employee(ID, nome, sexo, cpf, data);
+                    int id        = rs.getInt("PK_ID");
+                    String name   = rs.getString("name");
+                    String cpf    = rs.getString("cpf");
+                    Sex sex       = Sex.valueOf(rs.getString("sex"));
+                    Calendar date = Calendar.getInstance();
+
+                    date.setTimeInMillis(rs.getLong("birthDate"));
+
+                    return new Employee(id, name, sex, cpf, date);
                 }
             }
         }
-        return null;
+        throw new SQLException("Employee not found!");
     }
 }
