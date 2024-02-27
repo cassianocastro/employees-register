@@ -2,13 +2,11 @@ package model;
 
 /**
  *
- *
  */
 public enum Sex
 {
 
-    m("m"),
-    f("f");
+    M("M"), F("F");
 
     private final String description;
 
