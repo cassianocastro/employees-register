@@ -1,7 +1,6 @@
 nbproject/
 build/
 
-build.xml
-
+*.xml
 *.form
 *.sqlite
