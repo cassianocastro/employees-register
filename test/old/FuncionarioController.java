@@ -1,9 +1,5 @@
-package old.Controll;
+package old;
 
-import old.Model.dao.Dao;
-import old.Model.dao.FuncionarioDAO;
-import old.Model.*;
-import old.View.*;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.text.*;
@@ -144,5 +140,4 @@ public class FuncionarioController
         }
         this.funcionarioView.show(funcionario.toString());
     }
-
 }

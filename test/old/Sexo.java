@@ -1,12 +1,11 @@
-package old.Model;
+package old;
 
 /**
  *
  */
 public enum Sexo
 {
-    m("m"),
-    f("f");
+    m("m"), f("f");
 
     private final String descricao;
 

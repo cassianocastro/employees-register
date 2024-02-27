@@ -1,4 +1,4 @@
-package old.View;
+package old;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -115,5 +115,4 @@ public final class Cadastro extends JDialog implements ActionListener
     {
         return this.dados;
     }
-
 }

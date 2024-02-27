@@ -1,4 +1,4 @@
-package old.View;
+package old;
 
 import javax.swing.*;
 
@@ -75,5 +75,4 @@ public class FuncionarioView implements View
             novoDado
         };
     }
-
 }

@@ -1,7 +1,5 @@
 package old;
 
-import old.Model.dao.ConnectionFactory;
-import old.Controll.FuncionarioController;
 import java.sql.*;
 import javax.swing.*;
 

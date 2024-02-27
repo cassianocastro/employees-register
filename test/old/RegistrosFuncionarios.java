@@ -1,4 +1,4 @@
-package old.Model;
+package old;
 
 import java.util.*;
 
@@ -36,5 +36,4 @@ public class RegistrosFuncionarios implements Repositorio
         }
         return new StringBuilder("Sem registros");
     }
-
 }

@@ -1,7 +1,6 @@
-package old.Model.dao;
+package old;
 
 import java.sql.*;
-import old.Model.*;
 
 /**
  *
@@ -85,7 +84,7 @@ public class FuncionarioDAO implements Dao
     {
         Funcionario funcionario = (Funcionario) object;
         String SQL = "DELETE FROM funcionarios WHERE codigo = ?";
-        
+
         try (PreparedStatement statement = this.connection.prepareStatement(SQL))
         {
             statement.setInt(1, funcionario.getID());

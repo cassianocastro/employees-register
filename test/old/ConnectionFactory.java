@@ -1,4 +1,4 @@
-package old.Model.dao;
+package old;
 
 import java.sql.*;
 

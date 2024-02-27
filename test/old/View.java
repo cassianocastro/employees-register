@@ -1,4 +1,4 @@
-package old.View;
+package old;
 
 /**
  *
@@ -15,5 +15,4 @@ public interface View
     public String getID();
 
     public String[] update();
-
 }
