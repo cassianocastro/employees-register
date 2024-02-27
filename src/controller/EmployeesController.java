@@ -3,69 +3,26 @@ package controller;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.text.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import model.dao.EmployeeDAO;
 import model.Employee;
 import model.EmployeeFormatter;
 import model.Sex;
+import model.dao.ConnectionFactory;
+import view.EmployeeRegisterView;
 import view.EmployeeView;
-import view.View;
 
 /**
- *
  *
  */
 public class EmployeesController
 {
 
-    private final EmployeeDAO employeeDAO;
-    private final View employeeView;
-
-    public EmployeesController(Connection connection)
+    public void addEmployee()
     {
-        this.employeeDAO  = new EmployeeDAO(connection);
-        this.employeeView = new EmployeeView();
-    }
-
-    public void caller()
-    {
-        int option;
-        
-        while ( true )
-        {
-            option = this.employeeView.getOption();
-            try
-            {
-                switch ( option )
-                {
-                    case 0:
-                        this.create();
-                        break;
-                    case 1:
-                        this.read();
-                        break;
-                    case 2:
-                        this.search();
-                        break;
-                    case 3:
-                        this.update();
-                        break;
-                    case 4:
-                        this.delete();
-                        break;
-                    default:
-                        System.exit(0);
-                }
-            } catch (SQLException | ParseException e)
-            {
-                this.employeeView.show(e.getMessage());
-            }
-        }
-    }
-
-    private void create() throws SQLException, ParseException
-    {
-        String[] dados = this.employeeView.insert();
+        String[] dados = new EmployeeRegisterView().getDados();
 
         if ( dados == null ) return;
 
@@ -74,62 +31,118 @@ public class EmployeesController
         Sex sex       = Sex.valueOf(dados[2]);
         Calendar date = Calendar.getInstance();
 
-        date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]));
-
-        this.employeeDAO.insert(new Employee(0, name, sex, cpf, date));
-        this.employeeView.show("Funcionário cadastrado.");
-    }
-
-    private void read() throws SQLException
-    {
-        this.employeeView.show(this.employeeDAO.getAll().toString());
-    }
-
-    private void update() throws SQLException, ParseException
-    {
-        int id = Integer.parseUnsignedInt(this.employeeView.getID());
-
-        Employee employee = this.employeeDAO.findByID(id);
-        String[] dados    = this.employeeView.update();
-
-        switch ( dados[0] )
+        try (Connection connection = new ConnectionFactory().createConnection())
         {
-            case "Nome":
-                employee.setName(dados[1]);
-                break;
-            case "CPF":
-                employee.setCPF(dados[1]);
-                break;
-            case "Sexo":
-                employee.setSex(Sex.valueOf(dados[1]));
-                break;
-            default:
-                Calendar date = Calendar.getInstance();
-                date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[1]));
+            date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]));
 
-                employee.setBirthDate(date);
+            new EmployeeDAO(connection).insert(new Employee(0, name, sex, cpf, date));
         }
-        this.employeeDAO.update(employee);
-        this.employeeView.show("Registro atualizado.");
+        catch ( SQLException | ParseException e )
+        {
+            System.out.println(e.getMessage());
+        }
+
+        new EmployeeView().show("Funcionário cadastrado.");
     }
 
-    private void delete() throws SQLException
+    public void listEmployees()
     {
-        int id = Integer.parseUnsignedInt(this.employeeView.getID());
+        List<Employee> employees = new ArrayList<>();
 
-        Employee employee = this.employeeDAO.findByID(id);
+        try (Connection connection = new ConnectionFactory().createConnection())
+        {
+            employees = new EmployeeDAO(connection).getAll();
+        }
+        catch ( SQLException e )
+        {
+            System.out.println(e.getMessage());
+        }
 
-        this.employeeDAO.delete(employee);
-        this.employeeView.show("Funcionário excluído");
+        if ( ! employees.isEmpty() )
+        {
+            var msg = new EmployeeFormatter().formatList(employees);
+            new EmployeeView().show(msg);
+
+            return;
+        }
+
+        new EmployeeView().show("Without registers");
     }
 
-    private void search() throws SQLException
+    public void updateEmployee()
     {
-        int id = Integer.parseUnsignedInt(this.employeeView.getID());
+        var view = new EmployeeView();
+        int id   = Integer.parseUnsignedInt(view.getID());
 
-        Employee employee = this.employeeDAO.findByID(id);
-        String formatted  = new EmployeeFormatter().format(employee);
+        try (Connection connection = new ConnectionFactory().createConnection())
+        {
+            var dao = new EmployeeDAO(connection);
 
-        this.employeeView.show(formatted);
+            Employee employee = dao.findByID(id);
+            String[] dados    = view.update();
+
+            switch ( dados[0] )
+            {
+                case "Name":
+                    employee.setName(dados[1]);
+                    break;
+                case "CPF":
+                    employee.setCPF(dados[1]);
+                    break;
+                case "Sex":
+                    employee.setSex(Sex.valueOf(dados[1]));
+                    break;
+                default:
+                    Calendar date = Calendar.getInstance();
+                    date.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dados[1]));
+
+                    employee.setBirthDate(date);
+            }
+
+            dao.update(employee);
+            view.show("Registro atualizado.");
+        }
+        catch ( SQLException | ParseException e )
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteEmployee()
+    {
+        var view = new EmployeeView();
+        int id   = Integer.parseUnsignedInt(view.getID());
+
+        try (Connection connection = new ConnectionFactory().createConnection())
+        {
+            var dao = new EmployeeDAO(connection);
+            var employee = dao.findByID(id);
+
+            dao.delete(employee);
+        }
+        catch ( SQLException e )
+        {
+            System.out.println(e.getMessage());
+        }
+
+        view.show("Funcionário excluído");
+    }
+
+    public void findEmployee()
+    {
+        var view = new EmployeeView();
+        int id   = Integer.parseUnsignedInt(view.getID());
+
+        try (Connection connection = new ConnectionFactory().createConnection())
+        {
+            var employee  = new EmployeeDAO(connection).findByID(id);
+            var formatted = new EmployeeFormatter().format(employee);
+
+            view.show(formatted);
+        }
+        catch ( SQLException e )
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
