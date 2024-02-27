@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
- *
  *
  */
 public class EmployeeFormatter
@@ -27,5 +23,17 @@ public class EmployeeFormatter
             employee.getCPF(),
             new SimpleDateFormat("dd/MM/yyyy").format(employee.getBirthDate().getTime())
         );
+    }
+
+    public String formatList(List<Employee> employees)
+    {
+        var msg = new StringBuilder();
+
+        for ( Employee employee : employees )
+        {
+            msg.append(this.format(employee)).append("\n***\n");
+        }
+
+        return msg.toString();
     }
 }
