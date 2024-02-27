@@ -1,9 +1,6 @@
 package main;
 
-import model.App;
-
 /**
- *
  *
  */
 public class Main
