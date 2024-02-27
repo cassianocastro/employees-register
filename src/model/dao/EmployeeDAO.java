@@ -1,13 +1,13 @@
 package model.dao;
 
-import model.EmployeesGroup;
 import model.Employee;
 import model.Sex;
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- *
  *
  */
 public class EmployeeDAO
@@ -31,7 +31,7 @@ public class EmployeeDAO
             statement.setString(3, employee.getCPF());
             statement.setLong(4, employee.getBirthDate().getTimeInMillis());
 
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
@@ -59,18 +59,18 @@ public class EmployeeDAO
         {
             statement.setInt(1, employee.getID());
 
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
-    public EmployeesGroup getAll() throws SQLException
+    public List<Employee> getAll() throws SQLException
     {
         final String SQL = "SELECT PK_ID, name, sex, cpf, birthDate FROM employee";
 
-        try (var statement = this.connection.prepareStatement(SQL);
-            var rs = statement.executeQuery())
+        try (var statement = this.connection.createStatement();
+            var rs = statement.executeQuery(SQL))
         {
-            var group = new EmployeesGroup();
+            List<Employee> list = new ArrayList<>();
 
             while ( rs.next() )
             {
@@ -82,36 +82,36 @@ public class EmployeeDAO
 
                 date.setTimeInMillis(rs.getLong("birthDate"));
 
-                group.add(new Employee(id, name, sex, cpf, date));
+                list.add(new Employee(id, name, sex, cpf, date));
             }
-            return group;
+
+            return list;
         }
     }
 
     public Employee findByID(int ID) throws SQLException
     {
-        final String SQL = "SELECT PK_ID, name, sex, cpf, birthDate FROM employee WHERE PK_ID = ?";
+        final String SQL = "SELECT name, sex, cpf, birthDate FROM employee WHERE PK_ID = ?";
 
         try (var statement = this.connection.prepareStatement(SQL))
         {
             statement.setInt(1, ID);
 
-            try (var rs = statement.executeQuery())
+            var rs = statement.executeQuery();
+
+            if ( ! rs.next() )
             {
-                while ( rs.next() )
-                {
-                    int id        = rs.getInt("PK_ID");
-                    String name   = rs.getString("name");
-                    String cpf    = rs.getString("cpf");
-                    Sex sex       = Sex.valueOf(rs.getString("sex"));
-                    Calendar date = Calendar.getInstance();
-
-                    date.setTimeInMillis(rs.getLong("birthDate"));
-
-                    return new Employee(id, name, sex, cpf, date);
-                }
+                throw new SQLException("Employee not found!");
             }
+
+            String name   = rs.getString("name");
+            String cpf    = rs.getString("cpf");
+            Sex sex       = Sex.valueOf(rs.getString("sex"));
+            Calendar date = Calendar.getInstance();
+
+            date.setTimeInMillis(rs.getLong("birthDate"));
+
+            return new Employee(ID, name, sex, cpf, date);
         }
-        throw new SQLException("Employee not found!");
     }
 }
