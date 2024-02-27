@@ -4,36 +4,10 @@ import javax.swing.*;
 
 /**
  *
- *
  */
-public class EmployeeView implements View
+public class EmployeeView
 {
 
-    @Override
-    public int getOption()
-    {
-        return JOptionPane.showOptionDialog(
-            null,
-            "Choose an option:",
-            "Employee",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.INFORMATION_MESSAGE,
-            null,
-            new String[]
-            {
-                "Insert", "Show", "Search", "Update", "Delete", "Exit"
-            },
-            null
-        );
-    }
-
-    @Override
-    public String[] insert()
-    {
-        return new EmployeeRegisterView().getDados();
-    }
-
-    @Override
     public void show(CharSequence msg)
     {
         JOptionPane.showMessageDialog(
@@ -44,13 +18,11 @@ public class EmployeeView implements View
         );
     }
 
-    @Override
     public String getID()
     {
         return JOptionPane.showInputDialog("ID:");
     }
 
-    @Override
     public String[] update()
     {
         String attribute = JOptionPane.showInputDialog(
