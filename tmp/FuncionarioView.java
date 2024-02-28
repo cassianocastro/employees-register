@@ -13,7 +13,8 @@ public class FuncionarioView implements View
     {
         return JOptionPane.showOptionDialog(
             null,
-            "Escolha uma opção:", "Funcionário",
+            "Escolha uma opção:",
+            "Funcionário",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
             null,
@@ -68,11 +69,9 @@ public class FuncionarioView implements View
             },
             null
         ).toString();
+
         String novoDado = JOptionPane.showInputDialog(null, atributo + ":");
-        return new String[]
-        {
-            atributo,
-            novoDado
-        };
+
+        return new String[] { atributo, novoDado };
     }
 }

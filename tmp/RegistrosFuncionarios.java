@@ -24,16 +24,19 @@ public class RegistrosFuncionarios implements Repositorio
     @Override
     public StringBuilder toStringBuilder()
     {
-        if ( !this.grupo.isEmpty() )
+        if ( ! this.grupo.isEmpty() )
         {
             StringBuilder msg = new StringBuilder();
+
             for ( Funcionario funcionario : this.grupo )
             {
                 msg.append(funcionario.toString());
                 msg.append("\n***\n");
             }
+
             return msg;
         }
+
         return new StringBuilder("Sem registros");
     }
 }

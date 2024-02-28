@@ -30,6 +30,7 @@ public class FuncionarioDAO implements Dao
             statement.setString(2, funcionario.getSexo());
             statement.setString(3, funcionario.getCpf());
             statement.setDate(4, new Date(funcionario.getData_nascimento().getTime()));
+
             statement.executeUpdate();
         }
     }
@@ -45,15 +46,16 @@ public class FuncionarioDAO implements Dao
         {
             while ( rs.next() )
             {
-                int ID = rs.getInt("codigo");
+                int ID      = rs.getInt("codigo");
                 String nome = rs.getString("nome");
-                String cpf = rs.getString("cpf");
-                Sexo sexo = Sexo.valueOf(
-                    rs.getString("sexo"));
+                String cpf  = rs.getString("cpf");
+                Sexo sexo   = Sexo.valueOf(rs.getString("sexo"));
                 java.util.Date data = rs.getDate("data_nasc");
+
                 repositorio.add(new Funcionario(ID, nome, sexo, cpf, data));
             }
         }
+
         return repositorio;
     }
 
@@ -75,6 +77,7 @@ public class FuncionarioDAO implements Dao
             statement.setString(3, funcionario.getCpf());
             statement.setDate(4, new Date(funcionario.getData_nascimento().getTime()));
             statement.setInt(5, funcionario.getID());
+
             statement.executeUpdate();
         }
     }
@@ -88,6 +91,7 @@ public class FuncionarioDAO implements Dao
         try (PreparedStatement statement = this.connection.prepareStatement(SQL))
         {
             statement.setInt(1, funcionario.getID());
+
             statement.executeUpdate();
         }
     }
@@ -100,19 +104,22 @@ public class FuncionarioDAO implements Dao
         try (PreparedStatement statement = this.connection.prepareStatement(SQL))
         {
             statement.setInt(1, IDinformado);
+
             try (ResultSet rs = statement.executeQuery())
             {
                 while ( rs.next() )
                 {
-                    int ID = rs.getInt("codigo");
+                    int ID      = rs.getInt("codigo");
                     String nome = rs.getString("nome");
-                    String cpf = rs.getString("cpf");
-                    Sexo sexo = Sexo.valueOf(rs.getString("sexo"));
-                    Date data = rs.getDate("data_nasc");
+                    String cpf  = rs.getString("cpf");
+                    Sexo sexo   = Sexo.valueOf(rs.getString("sexo"));
+                    Date data   = rs.getDate("data_nasc");
+
                     return new Funcionario(ID, nome, sexo, cpf, data);
                 }
             }
         }
+
         return null;
     }
 }

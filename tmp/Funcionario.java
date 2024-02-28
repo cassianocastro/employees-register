@@ -27,10 +27,10 @@ public class Funcionario
     @Override
     public String toString()
     {
-        return "\nID: " + this.ID
+        return "\nID: "  + this.ID
             + "\nNome: " + this.nome
             + "\nSexo: " + this.sexo.getDescricao()
-            + "\nCPF: " + this.cpf
+            + "\nCPF: "  + this.cpf
             + "\nData de Nascimento: " + new SimpleDateFormat("dd/MM/yyyy")
                 .format(this.data_nascimento);
     }

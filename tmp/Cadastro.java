@@ -25,6 +25,7 @@ public final class Cadastro extends JDialog implements ActionListener
     public Cadastro()
     {
         setModalityType(DEFAULT_MODALITY_TYPE);
+
         this.grid = new GridLayout(4, 1);
         this.panelLabels = new JPanel(this.grid);
         this.panelFields = new JPanel(this.grid);
@@ -35,7 +36,8 @@ public final class Cadastro extends JDialog implements ActionListener
         {
             this.maskCPF = new MaskFormatter("###.###.###-##");
             this.maskNascimento = new MaskFormatter("##/##/####");
-        } catch (ParseException e)
+        }
+        catch ( ParseException e )
         {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -43,10 +45,7 @@ public final class Cadastro extends JDialog implements ActionListener
         this.fieldNome = new JFormattedTextField();
         this.fieldCPF = new JFormattedTextField(this.maskCPF);
         this.fieldNascimento = new JFormattedTextField(this.maskNascimento);
-        this.comboSexo = new JComboBox<>(new String[]
-        {
-            "m", "f"
-        });
+        this.comboSexo = new JComboBox<>(new String[] { "m", "f" });
 
         this.fieldNome.setColumns(20);
 
@@ -83,6 +82,7 @@ public final class Cadastro extends JDialog implements ActionListener
                 this.panelPrincipal
             }
         );
+
         setContentPane(this.jOptionPane);
         pack();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -104,10 +104,12 @@ public final class Cadastro extends JDialog implements ActionListener
                 this.comboSexo.getSelectedItem().toString(),
                 this.fieldNascimento.getText()
             };
-        } else if ( o == this.buttonCancelar )
+        }
+        else if ( o == this.buttonCancelar )
         {
             JOptionPane.showMessageDialog(rootPane, "Op. cancelada.");
         }
+
         this.dispose();
     }
 

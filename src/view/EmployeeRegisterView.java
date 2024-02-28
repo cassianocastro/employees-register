@@ -10,7 +10,6 @@ import javax.swing.text.MaskFormatter;
 
 /**
  *
- *
  */
 final public class EmployeeRegisterView extends JDialog implements ActionListener
 {
@@ -48,7 +47,8 @@ final public class EmployeeRegisterView extends JDialog implements ActionListene
         {
             this.maskCPF        = new MaskFormatter("###.###.###-##");
             this.maskNascimento = new MaskFormatter("##/##/####");
-        } catch (ParseException e)
+        }
+        catch ( ParseException e )
         {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -56,10 +56,7 @@ final public class EmployeeRegisterView extends JDialog implements ActionListene
         this.fieldNome       = new JFormattedTextField();
         this.fieldCPF        = new JFormattedTextField(this.maskCPF);
         this.fieldNascimento = new JFormattedTextField(this.maskNascimento);
-        this.comboSexo       = new JComboBox<>(new String[]
-        {
-            "M", "F"
-        });
+        this.comboSexo       = new JComboBox<>(new String[] { "M", "F" });
 
         this.fieldNome.setColumns(20);
 
@@ -113,6 +110,7 @@ final public class EmployeeRegisterView extends JDialog implements ActionListene
                 this.fieldNascimento.getText()
             };
         }
+
         this.dispose();
     }
 

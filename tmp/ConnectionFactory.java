@@ -13,12 +13,16 @@ public class ConnectionFactory
         try
         {
             return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/exercicio", "modifier", "modifier"
+                "jdbc:mysql://localhost:3306/exercicio",
+                "modifier",
+                "modifier"
             );
-        } catch (SQLException e)
+        }
+        catch ( SQLException e )
         {
             System.out.println(e.getMessage());
         }
+
         return null;
     }
 }

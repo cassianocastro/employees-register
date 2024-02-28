@@ -17,7 +17,8 @@ public class Main
         try (Connection connection = new ConnectionFactory().getConnection())
         {
             new FuncionarioController(connection).caller();
-        } catch (SQLException e)
+        }
+        catch ( SQLException e )
         {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }

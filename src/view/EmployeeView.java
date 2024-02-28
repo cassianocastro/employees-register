@@ -31,19 +31,12 @@ public class EmployeeView
             "To alter...",
             JOptionPane.DEFAULT_OPTION,
             null,
-            new String[]
-            {
-                "Name", "CPF", "Sex", "BirthDate"
-            },
+            new String[] { "Name", "CPF", "Sex", "BirthDate" },
             null
         ).toString();
 
         String newData = JOptionPane.showInputDialog(null, attribute + ":");
 
-        return new String[]
-        {
-            attribute,
-            newData
-        };
+        return new String[] { attribute, newData };
     }
 }
